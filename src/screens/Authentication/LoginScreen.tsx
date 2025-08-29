@@ -1,0 +1,162 @@
+import React, { useEffect, useState } from "react";
+import { View, ScrollView, SafeAreaView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import CustomText from "../../components/atoms/CustomText/CustomText";
+import Button from "../../components/atoms/Buttons/Button";
+import { useLoginViewModel } from "../../viewModels/useLoginViewModel";
+import { FormField } from "../../components/molecules/FormField/FormField";
+import { Divider } from "../../components/molecules/Divider/Divider";
+import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { TouchableOpacity } from "react-native";
+
+const LoginScreen: React.FC = () => {
+  const navigation = useNavigation();
+  const { form, handleSubmit, isLoading, error } = useLoginViewModel();
+  const {
+    control,
+    formState: { errors },
+  } = form;
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      console.error("Login error:", error);
+    }
+  }, [error]);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView
+        className="flex-1 px-6"
+        contentContainerStyle={{ paddingVertical: 24 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Header Section */}
+        <View className="items-center mb-8">
+          <CustomText
+            variant="heading"
+            size="2xl"
+            color="primary"
+            className="mb-2"
+          >
+            NourishWise
+          </CustomText>
+          <CustomText
+            variant="subtitle"
+            size="lg"
+            color="secondary"
+            align="center"
+          >
+            Postpartum Meal Plan
+          </CustomText>
+        </View>
+
+        {/* Form Section */}
+        <View className="mb-6">
+          <CustomText variant="heading" size="2xl" className="mb-4 text-center">
+            Login To Your Account
+          </CustomText>
+          <CustomText
+            variant="default"
+            color="secondary"
+            align="center"
+            className="mb-8"
+          >
+            Login to your account by adding your credentials.
+          </CustomText>
+
+          <View>
+            <FormField
+              control={control}
+              name="email"
+              label="Email Address"
+              placeholder="Enter Email Address"
+              autoCapitalize="none"
+              error={errors.email}
+              leftIcon={<Icon name="email" size={20} color="#666" />}
+            />
+
+            <FormField
+              control={control}
+              name="password"
+              label="Password"
+              placeholder="Enter Password"
+              secureTextEntry={!showPassword}
+              error={errors.password}
+              leftIcon={<Icon name="lock" size={20} color="#666" />}
+              rightIcon={
+                <TouchableOpacity onPress={togglePasswordVisibility}>
+                  <Icon
+                    name={showPassword ? "visibility" : "visibility-off"}
+                    size={20}
+                    color="#666"
+                  />
+                </TouchableOpacity>
+              }
+            />
+          </View>
+        </View>
+
+        {/* Forgot Password Redirect */}
+        <RedirectItem
+          message=""
+          actionLabel="Forgot Password?"
+          onPress={() => navigation.navigate("ForgotPassword" as never)}
+          align="right"
+          className="mb-6"
+        />
+
+        {/* Login Button */}
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          className="mb-6"
+          onPress={handleSubmit}
+          loading={isLoading}
+          disabled={isLoading}
+        >
+          Login
+        </Button>
+
+        {/* Divider */}
+        <Divider text="Or Login With" />
+
+        {/* Social Login Options */}
+        <View className="flex-row justify-center mb-8">
+          <Button
+            variant="outline"
+            size="md"
+            className="mr-2"
+            onPress={() => {
+              /* Handle Google sign in */
+            }}
+          >
+            Google
+          </Button>
+          <Button
+            variant="outline"
+            size="md"
+            onPress={() => {
+              /* Handle Apple sign in */
+            }}
+          >
+            Apple
+          </Button>
+        </View>
+
+        {/* Sign Up Redirect */}
+        <RedirectItem
+          message="Don't have an account? "
+          actionLabel="Sign Up"
+          onPress={() => navigation.navigate("SignUp" as never)}
+        />
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default LoginScreen;
