@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { View, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomText from "../../components/atoms/CustomText/CustomText";
@@ -8,6 +8,10 @@ import { FormField } from "../../components/molecules/FormField/FormField";
 import { Divider } from "../../components/molecules/Divider/Divider";
 import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AppleSignInButton from "../../components/atoms/AppleSignInButton/AppleSignInButton";
+import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAppleAuthViewModel";
+import GoogleSignInButton from "../../components/atoms/GoogleSignInButton/GoogleSignInButton";
+import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -16,6 +20,10 @@ const LoginScreen: React.FC = () => {
     control,
     formState: { errors },
   } = form;
+  const { handleAppleSignIn, isLoading: isAppleLoading } =
+    useAppleAuthViewModel();
+
+  const { signInWithGoogle  } = useGoogleAuthViewModel();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -140,26 +148,10 @@ const LoginScreen: React.FC = () => {
         <Divider text="Or Login With" />
 
         {/* Social Login Options */}
+
         <View className="flex-row justify-center mb-8">
-          <Button
-            variant="outline"
-            size="md"
-            className="mr-2"
-            onPress={() => {
-              /* Handle Google sign in */
-            }}
-          >
-            Google
-          </Button>
-          <Button
-            variant="outline"
-            size="md"
-            onPress={() => {
-              /* Handle Apple sign in */
-            }}
-          >
-            Apple
-          </Button>
+          <GoogleSignInButton size="md" onPress={signInWithGoogle} />
+          <AppleSignInButton size="md" onPress={handleAppleSignIn} />
         </View>
 
         {/* Sign Up Redirect */}

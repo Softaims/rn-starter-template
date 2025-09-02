@@ -18,13 +18,15 @@ import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectIt
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AppleSignInButton from "../../components/atoms/AppleSignInButton/AppleSignInButton";
 import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAppleAuthViewModel";
+import GoogleSignInButton from "../../components/atoms/GoogleSignInButton/GoogleSignInButton";
+import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
 
 const SignUpScreen: React.FC = () => {
   const navigation = useNavigation();
   console.log("sdssddsadsa"); // Disable console.log
-   const { form, handleSubmit, isLoading, error, isSuccess, userEmail } = useSignUpViewModel();
-  const { handleAppleSignIn, isLoading: isAppleLoading } =
-    useAppleAuthViewModel();
+  const { form, handleSubmit, isLoading, error, isSuccess, userEmail } = useSignUpViewModel();
+  const { handleAppleSignIn, isLoading: isAppleLoading } = useAppleAuthViewModel();
+  const { signInWithGoogle  } = useGoogleAuthViewModel();
 
   const {
     control,
@@ -166,9 +168,11 @@ const SignUpScreen: React.FC = () => {
         <Divider text="or signup with" />
 
         {/* Social Login Options */}
-        <View className="flex-row justify-center mb-8">
-          <AppleSignInButton size="md" onPress={handleAppleSignIn} />
+               <View className="flex-row justify-center mb-8">
+          <GoogleSignInButton size="md" onPress={signInWithGoogle} />
+          {/* <AppleSignInButton size="md" onPress={handleAppleSignIn} /> */}
         </View>
+
 
         {/* Login Redirect */}
         <RedirectItem
