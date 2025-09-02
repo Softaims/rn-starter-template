@@ -11,10 +11,13 @@ export const useAuth = () => {
     
     signUp: store.signUp,
     signIn: store.signIn,
+    signInWithApple: store.signInWithApple,
     signOut: store.signOut,
     forgotPassword: store.forgotPassword,
     resetPassword : store.resetPassword,
     verifyOtp: store.verifyOtp,
     clearError: store.clearError,
+    setUser: store.setUser,
+    setSession: store.setSession,
   };
 };

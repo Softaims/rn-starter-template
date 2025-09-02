@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, SafeAreaView } from "react-native";
+import { View, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomText from "../../components/atoms/CustomText/CustomText";
 import Button from "../../components/atoms/Buttons/Button";
-import { useLoginViewModel } from "../../viewModels/useLoginViewModel";
+import { useLoginViewModel } from "../../viewModels/AuthenticationView/useLoginViewModel";
 import { FormField } from "../../components/molecules/FormField/FormField";
 import { Divider } from "../../components/molecules/Divider/Divider";
 import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { TouchableOpacity } from "react-native";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { form, handleSubmit, isLoading, error } = useLoginViewModel();
+  const { form, loginDirect, isLoading, error } = useLoginViewModel();
   const {
     control,
     formState: { errors },
   } = form;
+
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -26,6 +26,22 @@ const LoginScreen: React.FC = () => {
   }, [error]);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  /**
+   * Handle login button click
+   */
+  const handleLogin = async () => {
+    try {
+      const values = form.getValues(); // { email, password }
+      const result = await loginDirect(values);
+
+      if (result?.success) {
+        navigation.navigate("Home" as never);
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -68,36 +84,34 @@ const LoginScreen: React.FC = () => {
             Login to your account by adding your credentials.
           </CustomText>
 
-          <View>
-            <FormField
-              control={control}
-              name="email"
-              label="Email Address"
-              placeholder="Enter Email Address"
-              autoCapitalize="none"
-              error={errors.email}
-              leftIcon={<Icon name="email" size={20} color="#666" />}
-            />
+          <FormField
+            control={control}
+            name="email"
+            label="Email Address"
+            placeholder="Enter Email Address"
+            autoCapitalize="none"
+            error={errors.email}
+            leftIcon={<Icon name="email" size={20} color="#666" />}
+          />
 
-            <FormField
-              control={control}
-              name="password"
-              label="Password"
-              placeholder="Enter Password"
-              secureTextEntry={!showPassword}
-              error={errors.password}
-              leftIcon={<Icon name="lock" size={20} color="#666" />}
-              rightIcon={
-                <TouchableOpacity onPress={togglePasswordVisibility}>
-                  <Icon
-                    name={showPassword ? "visibility" : "visibility-off"}
-                    size={20}
-                    color="#666"
-                  />
-                </TouchableOpacity>
-              }
-            />
-          </View>
+          <FormField
+            control={control}
+            name="password"
+            label="Password"
+            placeholder="Enter Password"
+            secureTextEntry={!showPassword}
+            error={errors.password}
+            leftIcon={<Icon name="lock" size={20} color="#666" />}
+            rightIcon={
+              <TouchableOpacity onPress={togglePasswordVisibility}>
+                <Icon
+                  name={showPassword ? "visibility" : "visibility-off"}
+                  size={20}
+                  color="#666"
+                />
+              </TouchableOpacity>
+            }
+          />
         </View>
 
         {/* Forgot Password Redirect */}
@@ -115,7 +129,7 @@ const LoginScreen: React.FC = () => {
           size="lg"
           fullWidth
           className="mb-6"
-          onPress={handleSubmit}
+          onPress={handleLogin}
           loading={isLoading}
           disabled={isLoading}
         >

@@ -6,7 +6,7 @@ import CustomText from '../../components/atoms/CustomText/CustomText';
 import Button from '../../components/atoms/Buttons/Button';
 import { FormField } from '../../components/molecules/FormField/FormField';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useResetPasswordViewModel } from '../../viewModels/useResetPasswordModel';
+import { useResetPasswordViewModel } from '../../viewModels/AuthenticationView/useResetPasswordModel';
 
 const ResetPasswordScreen: React.FC = () => {
   const navigation = useNavigation();

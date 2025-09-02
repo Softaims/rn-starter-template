@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { useAuthStore } from '../../../stores/supabaseAuth.store';
-import { useSignUpViewModel } from '../../../viewModels/useSignUpViewModel';
+import { useSignUpViewModel } from '../../../viewModels/AuthenticationView/useSignUpViewModel';
 import Button from '../../../components/atoms/Buttons/Button';
 import CustomText from '../../../components/atoms/CustomText/CustomText';
 import TextInputField from '../../../components/atoms/TextInputField';

@@ -1,10 +1,10 @@
 // src/stores/auth.store.ts
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { authService } from '../services/supabaseAuth.service';
-import { authService } from '../services/__mocks__/supabaseAuth.service';
-import { AuthState, User } from '../types/auth.types';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { authService } from '../services/supabaseAuth.service';
+// import { authService } from "../services/__mocks__/supabaseAuth.service";
+import { AuthState, User } from "../types/auth.types";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -21,19 +21,19 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true });
           const session = await authService.getSession();
           const isAuthenticated = !!session?.user;
-          
-          set({ 
-            session, 
+ 
+          set({
+            session,
             isLoading: false,
             isAuthenticated,
           });
-          
+
           if (session?.user) {
             set({
               user: {
                 id: session.user.id,
                 email: session.user.email!,
-                username: session.user.user_metadata?.username || '',
+                username: session.user.user_metadata?.username || "",
               },
             });
           }
@@ -44,24 +44,27 @@ export const useAuthStore = create<AuthState>()(
 
       signUp: async (formData) => {
         set({ isLoading: true, error: null });
-        
+
         try {
+          console.log("Signing up with data:", formData);
           const response = await authService.signUp(formData);
-          
+          console.log("Sign up response:", response); 
           if (response.success) {
             set({ isLoading: false });
           }
-          
+
           return response;
         } catch (error: any) {
           set({ isLoading: false, error: error.message });
           throw error;
+        }finally {
+          set({ isLoading: false });
         }
       },
 
       signIn: async (email, password) => {
         set({ isLoading: true, error: null });
-        
+
         try {
           const response = await authService.signIn(email, password);
           set({ isLoading: false, isAuthenticated: true });
@@ -72,17 +75,19 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      signOut: async () => {
-        set({ isLoading: true });
-        
+      signInWithApple: async (appleUser) => {
+        set({ isLoading: true, error: null });
         try {
-          await authService.signOut();
-          set({ 
-            user: null, 
-            session: null, 
-            isLoading: false, 
-            error: null,
-            isAuthenticated: false 
+          // You’d replace this with your backend call if needed
+          // Here we just set user directly for demo
+          set({
+            user: {
+              id: appleUser.id,
+              email: appleUser.email,
+              username: appleUser.username,
+            },
+            isAuthenticated: true,
+            isLoading: false,
           });
         } catch (error: any) {
           set({ isLoading: false, error: error.message });
@@ -90,9 +95,27 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-       forgotPassword: async (email: string) => {
+      signOut: async () => {
+        set({ isLoading: true });
+
+        try {
+          await authService.signOut();
+          set({
+            user: null,
+            session: null,
+            isLoading: false,
+            error: null,
+            isAuthenticated: false,
+          });
+        } catch (error: any) {
+          set({ isLoading: false, error: error.message });
+          throw error;
+        }
+      },
+
+      forgotPassword: async (email: string) => {
         set({ isLoading: true, error: null });
-        
+
         try {
           const response = await authService.forgotPassword(email);
           set({ isLoading: false });
@@ -105,7 +128,7 @@ export const useAuthStore = create<AuthState>()(
 
       resetPassword: async (newPassword: string) => {
         set({ isLoading: true, error: null });
-        
+
         try {
           const response = await authService.resetPassword(newPassword);
           set({ isLoading: false });
@@ -118,27 +141,30 @@ export const useAuthStore = create<AuthState>()(
 
       verifyOtp: async (email: string, token: string) => {
         set({ isLoading: true, error: null });
-        
+        console.log("Verifying OTP for email:", email, "with token:", token);
+
         try {
           const response = await authService.verifyOtp(email, token);
           set({ isLoading: false });
           return response;
         } catch (error: any) {
+          console.error("Error in verifyOtp store:", error);
           set({ isLoading: false, error: error.message });
           throw error;
-        }
+        } 
       },
 
       clearError: () => set({ error: null }),
 
       setUser: (user: User | null) => set({ user, isAuthenticated: !!user }),
-      setSession: (session: any) => set({ session, isAuthenticated: !!session?.user }),
+      setSession: (session: any) =>
+        set({ session, isAuthenticated: !!session?.user }),
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({ 
-        user: state.user, 
+      partialize: (state) => ({
+        user: state.user,
         session: state.session,
         isAuthenticated: state.isAuthenticated,
       }),
@@ -148,14 +174,14 @@ export const useAuthStore = create<AuthState>()(
 
 // Set up auth state change listener
 authService.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_IN' && session?.user) {
+  if (event === "SIGNED_IN" && session?.user) {
     useAuthStore.getState().setSession(session);
     useAuthStore.getState().setUser({
       id: session.user.id,
       email: session.user.email!,
-      username: session.user.user_metadata?.username || '',
+      username: session.user.user_metadata?.username || "",
     });
-  } else if (event === 'SIGNED_OUT') {
+  } else if (event === "SIGNED_OUT") {
     useAuthStore.getState().setSession(null);
     useAuthStore.getState().setUser(null);
   }

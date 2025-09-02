@@ -1,8 +1,8 @@
 // src/viewModels/useResetPasswordViewModel.ts
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { resetPasswordSchema, ResetPasswordFormData } from "../validations/auth.schema";
-import { useAuth } from "../hooks/useAuth";
+import { resetPasswordSchema, ResetPasswordFormData } from "../../validations/auth.schema";
+import { useAuth } from "../../hooks/useAuth";
 
 export const useResetPasswordViewModel = () => {
   const { resetPassword, isLoading, error, clearError } = useAuth();

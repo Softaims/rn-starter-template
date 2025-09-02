@@ -7,7 +7,7 @@ import Button from '../../components/atoms/Buttons/Button';
 import { RedirectItem } from '../../components/molecules/RedirectItem/RedirectItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { FormField } from '../../components/molecules/FormField/FormField';
-import { useForgotPasswordViewModel } from '../../viewModels/useForgotPasswordViewModel';
+import { useForgotPasswordViewModel } from '../../viewModels/AuthenticationView/useForgotPasswordViewModel';
 
 const ForgotPasswordScreen: React.FC = () => {
   const navigation = useNavigation();

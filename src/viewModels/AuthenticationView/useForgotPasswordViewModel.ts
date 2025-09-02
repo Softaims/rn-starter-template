@@ -2,8 +2,8 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema, ForgotPasswordFormData } from "../validations/auth.schema";
-import { useAuth } from "../hooks/useAuth";
+import { forgotPasswordSchema, ForgotPasswordFormData } from "../../validations/auth.schema";
+import { useAuth } from "../../hooks/useAuth";
 
 export const useForgotPasswordViewModel = () => {
   const { forgotPassword, isLoading, error, clearError } = useAuth();

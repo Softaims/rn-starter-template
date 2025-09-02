@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  Text,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Controller } from "react-hook-form";
 import CustomText from "../../components/atoms/CustomText/CustomText";
 import Button from "../../components/atoms/Buttons/Button";
 import TextInputField from "../../components/atoms/TextInputField/TextInputField";
-import { useSignUpViewModel } from "../../viewModels/useSignUpViewModel";
+import { useSignUpViewModel } from "../../viewModels/AuthenticationView/useSignUpViewModel";
 import { FormField } from "../../components/molecules/FormField/FormField";
 import { Divider } from "../../components/molecules/Divider/Divider";
 import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AppleSignInButton from "../../components/atoms/AppleSignInButton/AppleSignInButton";
+import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAppleAuthViewModel";
 
 const SignUpScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { form, handleSubmit, isLoading, error } = useSignUpViewModel();
+  console.log("sdssddsadsa"); // Disable console.log
+   const { form, handleSubmit, isLoading, error, isSuccess, userEmail } = useSignUpViewModel();
+  const { handleAppleSignIn, isLoading: isAppleLoading } =
+    useAppleAuthViewModel();
+
   const {
     control,
     formState: { errors },
@@ -21,11 +33,15 @@ const SignUpScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  useEffect(() => {
-    if (error) {
-      console.error("Sign up error:", error);
+   useEffect(() => {
+    if (isSuccess && userEmail) {
+      navigation.navigate("OTP" as never, { email: userEmail } as never);
     }
-  }, [error]);
+  }, [isSuccess, userEmail, navigation]);
+
+   const onSubmit = (data: any) => {
+    handleSubmit(data);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -139,7 +155,7 @@ const SignUpScreen: React.FC = () => {
           size="lg"
           fullWidth
           className="mb-6"
-          onPress={handleSubmit}
+          onPress={onSubmit}
           loading={isLoading}
           disabled={isLoading}
         >
@@ -151,25 +167,7 @@ const SignUpScreen: React.FC = () => {
 
         {/* Social Login Options */}
         <View className="flex-row justify-center mb-8">
-          <Button
-            variant="outline"
-            size="md"
-            className="mr-2"
-            onPress={() => {
-              /* Handle Google sign in */
-            }}
-          >
-            Google
-          </Button>
-          <Button
-            variant="outline"
-            size="md"
-            onPress={() => {
-              /* Handle Apple sign in */
-            }}
-          >
-            Apple
-          </Button>
+          <AppleSignInButton size="md" onPress={handleAppleSignIn} />
         </View>
 
         {/* Login Redirect */}

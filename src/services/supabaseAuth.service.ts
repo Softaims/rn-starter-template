@@ -1,38 +1,42 @@
 // src/services/auth.service.ts
-import { supabase } from '../../lib/supabaseClient';
-import { SignUpFormData, AuthResponse } from '../types/auth.types';
+import { supabase } from "../../lib/supabaseClient";
+import { SignUpFormData, AuthResponse } from "../types/auth.types";
 
 export const authService = {
-  signUp: async (formData: SignUpFormData): Promise<AuthResponse> => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            username: formData.username,
-          },
-        },
-      });
+  signUp: async (formData: SignUpFormData) => {
+    const { email, password, username} = formData;
 
-      if (error) {
-        throw error;
-      }
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: "myapp://auth/verify", // deep link for verification
+        data: { username }, // store in user_metadata
+      },
+    });
 
-      return {
-        success: true,
-        data: {
-          userId: data.user?.id || '',
-          email: data.user?.email || '',
+    console.log("Supabase signUp response:", { data, error });
+
+    if (error) throw error;
+
+    const user = data.user;
+    if (user) {
+      // insert profile row
+      const { error: profileError } = await supabase.from("profiles").insert([
+        {
+          id: user.id,
+          email: user.email,
+          username: username,
+          // first_name: firstName,
+          // last_name: lastName,
+
         },
-      };
-    } catch (error) {
-      console.error('Sign up error:', error);
-      throw {
-        message: error.message || 'An error occurred during sign up',
-        code: error.code || 'SIGN_UP_ERROR',
-      };
+      ]);
+
+      if (profileError) throw profileError;
     }
+
+    return { success: true, user: data.user };
   },
 
   signIn: async (email: string, password: string): Promise<AuthResponse> => {
@@ -49,15 +53,15 @@ export const authService = {
       return {
         success: true,
         data: {
-          userId: data.user?.id || '',
-          email: data.user?.email || '',
+          userId: data.user?.id || "",
+          email: data.user?.email || "",
         },
       };
     } catch (error) {
-      console.error('Sign in error:', error);
+      console.error("Sign in error:", error);
       throw {
-        message: error.message || 'An error occurred during sign in',
-        code: error.code || 'SIGN_IN_ERROR',
+        message: error.message || "An error occurred during sign in",
+        code: error.code || "SIGN_IN_ERROR",
       };
     }
   },
@@ -69,18 +73,18 @@ export const authService = {
         throw error;
       }
     } catch (error) {
-      console.error('Sign out error:', error);
+      console.error("Sign out error:", error);
       throw {
-        message: error.message || 'An error occurred during sign out',
-        code: error.code || 'SIGN_OUT_ERROR',
+        message: error.message || "An error occurred during sign out",
+        code: error.code || "SIGN_OUT_ERROR",
       };
     }
   },
 
-   forgotPassword: async (email: string): Promise<AuthResponse> => {
+  forgotPassword: async (email: string): Promise<AuthResponse> => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'nourishwise://reset-password', // Deep link for your app
+        redirectTo: "nourishwise://reset-password", // Deep link for your app
       });
 
       if (error) {
@@ -89,13 +93,13 @@ export const authService = {
 
       return {
         success: true,
-        message: 'Password reset email sent successfully',
+        message: "Password reset email sent successfully",
       };
     } catch (error) {
-      console.error('Forgot password error:', error);
+      console.error("Forgot password error:", error);
       throw {
-        message: error.message || 'An error occurred while sending reset email',
-        code: error.code || 'FORGOT_PASSWORD_ERROR',
+        message: error.message || "An error occurred while sending reset email",
+        code: error.code || "FORGOT_PASSWORD_ERROR",
       };
     }
   },
@@ -112,13 +116,13 @@ export const authService = {
 
       return {
         success: true,
-        message: 'Password reset successfully',
+        message: "Password reset successfully",
       };
     } catch (error) {
-      console.error('Reset password error:', error);
+      console.error("Reset password error:", error);
       throw {
-        message: error.message || 'An error occurred while resetting password',
-        code: error.code || 'RESET_PASSWORD_ERROR',
+        message: error.message || "An error occurred while resetting password",
+        code: error.code || "RESET_PASSWORD_ERROR",
       };
     }
   },
@@ -131,25 +135,27 @@ export const authService = {
       const { data, error } = await supabase.auth.verifyOtp({
         email,
         token,
-        type: 'recovery',
+        type: "email",
       });
 
       if (error) {
         throw error;
       }
 
+      console.log("OTP verification successful:", data);
+
       return {
         success: true,
         data: {
-          userId: data.user?.id || '',
-          email: data.user?.email || '',
+          userId: data.user?.id || "",
+          email: data.user?.email || "",
         },
       };
     } catch (error) {
-      console.error('OTP verification error:', error);
+      console.error("OTP verification error:", error);
       throw {
-        message: error.message || 'An error occurred during OTP verification',
-        code: error.code || 'OTP_VERIFICATION_ERROR',
+        message: error.message || "An error occurred during OTP verification",
+        code: error.code || "OTP_VERIFICATION_ERROR",
       };
     }
   },
@@ -162,7 +168,7 @@ export const authService = {
       }
       return data.session;
     } catch (error) {
-      console.error('Get session error:', error);
+      console.error("Get session error:", error);
       throw error;
     }
   },

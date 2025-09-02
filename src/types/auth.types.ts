@@ -16,6 +16,7 @@ export interface AuthState {
   initializeAuth: () => Promise<void>;
   signUp: (formData: SignUpFormData) => Promise<AuthResponse>;
   signIn: (email: string, password: string) => Promise<AuthResponse>;
+  signInWithApple: (identityToken: string, user: User) => Promise<AuthResponse>;
   signOut: () => Promise<void>;
   
   // New password reset actions
@@ -33,6 +34,8 @@ export interface SignUpFormData {
   email: string;
   password: string;
   confirmPassword: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface AuthResponse {

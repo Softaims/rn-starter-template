@@ -22,7 +22,10 @@ const OTPInput: React.FC<OTPInputProps> = ({
   }, [length]);
 
   const focusInput = (index: number) => {
-    inputRefs.current[index]?.current?.focus();
+    // Add a small delay to ensure proper focus
+    setTimeout(() => {
+      inputRefs.current[index]?.current?.focus();
+    }, 10);
   };
 
   return (
@@ -33,27 +36,35 @@ const OTPInput: React.FC<OTPInputProps> = ({
         const digits = value ? value.split("") : Array(length).fill("");
 
         const handleChange = (text: string, index: number) => {
+          // Handle paste - check if text contains multiple digits
           if (text.length > 1) {
-            // Handle paste
-            const pastedDigits = text.split("").slice(0, length);
-            const newDigits = [...digits];
+            // Extract only digits from pasted text
+            const pastedDigits = text.replace(/\D/g, '').split('').slice(0, length);
+            const newDigits = Array(length).fill('');
+            
+            // Fill digits starting from the current index or from 0 if pasting
             pastedDigits.forEach((char, i) => {
-              if (index + i < length && /^\d$/.test(char)) {
-                newDigits[index + i] = char;
+              if (i < length) {
+                newDigits[i] = char;
               }
             });
+            
             onChange(newDigits.join(""));
-            const nextIndex = Math.min(index + pastedDigits.length, length - 1);
-            focusInput(nextIndex);
+            
+            // Focus on the last filled input or the last input if all are filled
+            const lastFilledIndex = Math.min(pastedDigits.length - 1, length - 1);
+            focusInput(lastFilledIndex);
             return;
           }
 
+          // Handle single character input
           if (!/^\d?$/.test(text)) return;
 
           const newDigits = [...digits];
           newDigits[index] = text;
           onChange(newDigits.join(""));
 
+          // Auto-move to next field if character was entered and not at last field
           if (text && index < length - 1) {
             focusInput(index + 1);
           }
@@ -61,8 +72,20 @@ const OTPInput: React.FC<OTPInputProps> = ({
 
         const handleKeyPress = (e: any, index: number) => {
           if (e.nativeEvent.key === "Backspace" && !digits[index] && index > 0) {
+            // Clear previous field and move focus there
+            const newDigits = [...digits];
+            newDigits[index - 1] = "";
+            onChange(newDigits.join(""));
             focusInput(index - 1);
           }
+        };
+
+        const handleFocus = (index: number) => {
+          setFocusedIndex(index);
+          // Select all text when focusing (for better UX)
+          setTimeout(() => {
+            inputRefs.current[index]?.current?.setSelection(0, 1);
+          }, 10);
         };
 
         return (
@@ -71,6 +94,7 @@ const OTPInput: React.FC<OTPInputProps> = ({
             <CustomText variant="heading" size="2xl" className="mb-4 text-center">
               Verify Your Email
             </CustomText>
+
             {/* Instruction */}
             <CustomText
               variant="default"
@@ -80,6 +104,7 @@ const OTPInput: React.FC<OTPInputProps> = ({
             >
               Enter the 6-digit code sent to {email || "your email"}.
             </CustomText>
+
             {/* OTP Input Fields */}
             <View className="flex-row justify-center space-x-4 mb-4">
               {Array.from({ length }).map((_, index) => (
@@ -93,16 +118,18 @@ const OTPInput: React.FC<OTPInputProps> = ({
                   value={digits[index]}
                   onChangeText={(text) => handleChange(text, index)}
                   onKeyPress={(e) => handleKeyPress(e, index)}
-                  onFocus={() => setFocusedIndex(index)}
+                  onFocus={() => handleFocus(index)}
                   onBlur={() => setFocusedIndex(null)}
                   keyboardType="number-pad"
-                  maxLength={1}
+                  maxLength={length} // Allow longer input for paste handling
                   textAlign="center"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  selectTextOnFocus={true} // Better UX for editing
                 />
               ))}
             </View>
+
             {/* Error Message */}
             {error && (
               <CustomText
@@ -114,8 +141,9 @@ const OTPInput: React.FC<OTPInputProps> = ({
                 {error.message}
               </CustomText>
             )}
+
             {/* Resend OTP */}
-            <TouchableOpacity onPress={onResend} >
+            <TouchableOpacity onPress={onResend}>
               <CustomText
                 variant="default"
                 size="sm"
