@@ -2,9 +2,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { authService } from '../services/supabaseAuth.service';
+import { authService } from "../services/supabaseAuth.service";
 // import { authService } from "../services/__mocks__/supabaseAuth.service";
 import { AuthState, User } from "../types/auth.types";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -21,7 +23,7 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true });
           const session = await authService.getSession();
           const isAuthenticated = !!session?.user;
- 
+
           set({
             session,
             isLoading: false,
@@ -48,7 +50,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           console.log("Signing up with data:", formData);
           const response = await authService.signUp(formData);
-          console.log("Sign up response:", response); 
+          console.log("Sign up response:", response);
           if (response.success) {
             set({ isLoading: false });
           }
@@ -57,7 +59,7 @@ export const useAuthStore = create<AuthState>()(
         } catch (error: any) {
           set({ isLoading: false, error: error.message });
           throw error;
-        }finally {
+        } finally {
           set({ isLoading: false });
         }
       },
@@ -75,23 +77,18 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      signInWithApple: async (appleUser) => {
-        set({ isLoading: true, error: null });
+      signInWithSocial: async (provider, idToken, accessToken) => {
         try {
-          // You’d replace this with your backend call if needed
-          // Here we just set user directly for demo
-          set({
-            user: {
-              id: appleUser.id,
-              email: appleUser.email,
-              username: appleUser.username,
-            },
-            isAuthenticated: true,
-            isLoading: false,
-          });
-        } catch (error: any) {
-          set({ isLoading: false, error: error.message });
-          throw error;
+          set({ isLoading: true, error: null });
+          const { data, error } = await authService.signInWithProvider(
+            provider,
+            idToken,
+            accessToken
+          );
+          if (error) throw error;
+          set({ user: data.user, isLoading: false });
+        } catch (err: any) {
+          set({ error: err.message, isLoading: false });
         }
       },
 
@@ -151,7 +148,7 @@ export const useAuthStore = create<AuthState>()(
           console.error("Error in verifyOtp store:", error);
           set({ isLoading: false, error: error.message });
           throw error;
-        } 
+        }
       },
 
       clearError: () => set({ error: null }),

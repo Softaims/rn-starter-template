@@ -16,17 +16,19 @@ import { FormField } from "../../components/molecules/FormField/FormField";
 import { Divider } from "../../components/molecules/Divider/Divider";
 import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import AppleSignInButton from "../../components/atoms/AppleSignInButton/AppleSignInButton";
 import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAppleAuthViewModel";
-import GoogleSignInButton from "../../components/atoms/GoogleSignInButton/GoogleSignInButton";
 import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
+import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 const SignUpScreen: React.FC = () => {
   const navigation = useNavigation();
   console.log("sdssddsadsa"); // Disable console.log
-  const { form, handleSubmit, isLoading, error, isSuccess, userEmail } = useSignUpViewModel();
-  const { handleAppleSignIn, isLoading: isAppleLoading } = useAppleAuthViewModel();
-  const { signInWithGoogle  } = useGoogleAuthViewModel();
+  const { form, handleSubmit, isLoading, error, isSuccess, userEmail } =
+    useSignUpViewModel();
+  const { signInWithGoogle, isLoading: googleLoading } =
+    useGoogleAuthViewModel();
+  const { signInWithApple, isLoading: appleLoading } = useAppleAuthViewModel();
 
   const {
     control,
@@ -35,13 +37,13 @@ const SignUpScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     if (isSuccess && userEmail) {
       navigation.navigate("OTP" as never, { email: userEmail } as never);
     }
   }, [isSuccess, userEmail, navigation]);
 
-   const onSubmit = (data: any) => {
+  const onSubmit = (data: any) => {
     handleSubmit(data);
   };
 
@@ -168,11 +170,24 @@ const SignUpScreen: React.FC = () => {
         <Divider text="or signup with" />
 
         {/* Social Login Options */}
-               <View className="flex-row justify-center mb-8">
-          <GoogleSignInButton size="md" onPress={signInWithGoogle} />
-          {/* <AppleSignInButton size="md" onPress={handleAppleSignIn} /> */}
-        </View>
+        <View className="flex-row justify-center mb-8">
+          <GoogleSigninButton
+            onPress={signInWithGoogle}
+            disabled={googleLoading}
+          />
 
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={
+              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+            }
+            buttonStyle={
+              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+            }
+            cornerRadius={5}
+            style={{ width: 200, height: 44 }}
+            onPress={signInWithApple}
+          />
+        </View>
 
         {/* Login Redirect */}
         <RedirectItem

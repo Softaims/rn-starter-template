@@ -1,11 +1,11 @@
 // src/viewModels/useAppleAuthViewModel.ts
 import * as AppleAuthentication from "expo-apple-authentication";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuthStore } from "../../stores/supabaseAuth.store";
 
 export const useAppleAuthViewModel = () => {
-  const { signInWithApple, isLoading, error } = useAuth();
+  const { signInWithSocial, isLoading, error } = useAuthStore();
 
-  const handleAppleSignIn = async () => {
+  const signInWithApple = async () => {
     try {
       const credential = await AppleAuthentication.signInAsync({
         requestedScopes: [
@@ -14,27 +14,17 @@ export const useAppleAuthViewModel = () => {
         ],
       });
 
-      const userData = {
-        username: credential.fullName
-          ? `${credential.fullName.givenName || ""} ${credential.fullName.familyName || ""}`.trim()
-          : "Name not provided",
-        email: credential.email || "Email not provided",
-        id: credential.user,
-      };
-
-      await signInWithApple(credential.identityToken,userData);
-    } catch (e: any) {
-      if (e.code === "ERR_REQUEST_CANCELED") {
-        console.log("Apple sign-in canceled");
+      if (credential.identityToken) {
+        await signInWithSocial("apple", credential.identityToken , undefined);
       } else {
-        console.error("Apple sign-in error:", e);
+        throw new Error("No identity token received from Apple");
+      }
+    } catch (err: any) {
+      if (err.code !== "ERR_CANCELED") {
+        console.error("Apple Sign-In Error:", err);
       }
     }
   };
 
-  return {
-    handleAppleSignIn,
-    isLoading,
-    error,
-  };
+  return { signInWithApple, isLoading, error };
 };

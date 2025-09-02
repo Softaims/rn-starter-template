@@ -8,10 +8,9 @@ export const useAuth = () => {
     isAuthenticated: store.isAuthenticated,
     isLoading: store.isLoading,
     error: store.error,
-    
     signUp: store.signUp,
     signIn: store.signIn,
-    signInWithApple: store.signInWithApple,
+    signInWithSocial: store.signInWithSocial,
     signOut: store.signOut,
     forgotPassword: store.forgotPassword,
     resetPassword : store.resetPassword,

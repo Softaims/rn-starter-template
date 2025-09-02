@@ -11,19 +11,23 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  
+
   // Actions
   initializeAuth: () => Promise<void>;
   signUp: (formData: SignUpFormData) => Promise<AuthResponse>;
   signIn: (email: string, password: string) => Promise<AuthResponse>;
-  signInWithApple: (identityToken: string, user: User) => Promise<AuthResponse>;
+  signInWithSocial: (
+    provider: string,
+    idToken: string,
+    accessToken?: string
+  ) => Promise<void>;
   signOut: () => Promise<void>;
-  
+
   // New password reset actions
   forgotPassword: (email: string) => Promise<AuthResponse>;
   resetPassword: (newPassword: string) => Promise<AuthResponse>;
   verifyOtp: (email: string, token: string) => Promise<AuthResponse>;
-  
+
   clearError: () => void;
   setUser: (user: User | null) => void;
   setSession: (session: any) => void;
@@ -62,23 +66,23 @@ export interface OTPVerificationFormData {
 }
 
 // Type for auth state change events
-export type AuthStateChangeEvent = 
-  | 'SIGNED_IN' 
-  | 'SIGNED_OUT' 
-  | 'TOKEN_REFRESHED' 
-  | 'USER_UPDATED' 
-  | 'PASSWORD_RECOVERY';
+export type AuthStateChangeEvent =
+  | "SIGNED_IN"
+  | "SIGNED_OUT"
+  | "TOKEN_REFRESHED"
+  | "USER_UPDATED"
+  | "PASSWORD_RECOVERY";
 
 // Type for auth error codes
 export type AuthErrorCode =
-  | 'SIGNUP_EMAIL_EXISTS'
-  | 'INVALID_CREDENTIALS'
-  | 'NETWORK_ERROR'
-  | 'INVALID_OTP'
-  | 'OTP_EXPIRED'
-  | 'PASSWORD_TOO_WEAK'
-  | 'NO_SESSION'
-  | 'UNKNOWN_ERROR';
+  | "SIGNUP_EMAIL_EXISTS"
+  | "INVALID_CREDENTIALS"
+  | "NETWORK_ERROR"
+  | "INVALID_OTP"
+  | "OTP_EXPIRED"
+  | "PASSWORD_TOO_WEAK"
+  | "NO_SESSION"
+  | "UNKNOWN_ERROR";
 
 export interface AuthError {
   message: string;

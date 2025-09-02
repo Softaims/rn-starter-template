@@ -1,5 +1,6 @@
 <resources>
   <string name="app_name">rn-template</string>
+  <string name="server_client_id">034133353106-dai9f83u5vc279vgllvk4og6a1kjj2ef.apps.googleusercontent.com</string>
   <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
 </resources>

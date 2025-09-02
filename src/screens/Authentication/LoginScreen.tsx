@@ -8,10 +8,10 @@ import { FormField } from "../../components/molecules/FormField/FormField";
 import { Divider } from "../../components/molecules/Divider/Divider";
 import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import AppleSignInButton from "../../components/atoms/AppleSignInButton/AppleSignInButton";
 import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAppleAuthViewModel";
-import GoogleSignInButton from "../../components/atoms/GoogleSignInButton/GoogleSignInButton";
 import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
+import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -20,10 +20,8 @@ const LoginScreen: React.FC = () => {
     control,
     formState: { errors },
   } = form;
-  const { handleAppleSignIn, isLoading: isAppleLoading } =
-    useAppleAuthViewModel();
-
-  const { signInWithGoogle  } = useGoogleAuthViewModel();
+   const { signInWithGoogle, isLoading: googleLoading } = useGoogleAuthViewModel();
+  const { signInWithApple, isLoading: appleLoading } = useAppleAuthViewModel();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -150,8 +148,19 @@ const LoginScreen: React.FC = () => {
         {/* Social Login Options */}
 
         <View className="flex-row justify-center mb-8">
-          <GoogleSignInButton size="md" onPress={signInWithGoogle} />
-          <AppleSignInButton size="md" onPress={handleAppleSignIn} />
+        <GoogleSigninButton
+        onPress={signInWithGoogle}
+        disabled={googleLoading}
+      />
+
+      <AppleAuthentication.AppleAuthenticationButton
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+        cornerRadius={5}
+        style={{ width: 200, height: 44 }}
+        onPress={signInWithApple}
+        disabled={appleLoading}
+      />
         </View>
 
         {/* Sign Up Redirect */}

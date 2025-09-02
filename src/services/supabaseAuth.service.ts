@@ -66,6 +66,14 @@ export const authService = {
     }
   },
 
+   signInWithProvider: async (provider: string, idToken: string, accessToken?: string) => {
+    return supabase.auth.signInWithIdToken({
+      provider,
+      token: idToken,
+      access_token: accessToken,
+    });
+  },
+
   signOut: async (): Promise<void> => {
     try {
       const { error } = await supabase.auth.signOut();

@@ -27,6 +27,8 @@ keytool -list -v -keystore ./android/app/debug.keystore
 password : android or as you used
 paste package => android/app/build.gradle  (applicationId)
 copy client id : i.e 1034133353106-dai9f83u5vc279vgllvk4og6a1kjj2ef.apps.googleusercontent.com
+add this android client to string.xml 
+# <string name="server_client_id">034133353106-dai9f83u5vc279vgllvk4og6a1kjj2ef.apps.googleusercontent.com</string>
 
 # for ios create again
 bundle id use commnd grep -r "PRODUCT_BUNDLE_IDENTIFIER" ios/
