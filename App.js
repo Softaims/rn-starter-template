@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuthStore } from "./src/stores/supabaseAuth.store";
 import { ActivityIndicator, View } from "react-native";
-
+import "./global.css";
 import SignUpScreen from "./src/screens/Authentication/SignupScreen";
 import LoginScreen from "./src/screens/Authentication/LoginScreen";
 import ForgotPasswordScreen from "./src/screens/Authentication/ForgotPasswordScreen";

@@ -35,9 +35,9 @@ const LoginScreen: React.FC = () => {
       const values = form.getValues(); // { email, password }
       const result = await loginDirect(values);
 
-      if (result?.success) {
-        navigation.navigate("Home" as never);
-      }
+      // if (result?.success) {
+      //   navigation.navigate("Home" as never);
+      // }
     } catch (err) {
       console.error("Login failed:", err);
     }
