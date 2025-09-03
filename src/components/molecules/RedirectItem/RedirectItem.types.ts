@@ -4,7 +4,7 @@ import { redirectItemVariants } from './RedirectItem.variants';
 
 export interface RedirectItemProps extends VariantProps<typeof redirectItemVariants> {
   message?: string;
-  actionLabel: string;
+  actionLabel? : string;
   onPress: () => void;
   className?: string;
 }

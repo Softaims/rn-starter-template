@@ -12,6 +12,7 @@ import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAp
 import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import * as AppleAuthentication from "expo-apple-authentication";
+import PrimaryButton from "../../components/molecules/Buttons/PrimaryButton";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -127,17 +128,13 @@ const LoginScreen: React.FC = () => {
         />
 
         {/* Login Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          className="mb-6"
+        <PrimaryButton
           onPress={handleLogin}
           loading={isLoading}
           disabled={isLoading}
         >
           Login
-        </Button>
+        </PrimaryButton>
 
         {/* Divider */}
         <Divider text="Or Login With" />

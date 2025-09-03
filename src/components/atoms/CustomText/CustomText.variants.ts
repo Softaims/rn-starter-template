@@ -28,6 +28,7 @@ export const textVariants = cva(
         error: 'text-red-600',
         warning: 'text-yellow-600',
         neutral: 'text-gray-900',
+        light : 'text-white',
       },
       align: {
         left: 'text-left',

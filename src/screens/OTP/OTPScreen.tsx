@@ -7,6 +7,7 @@ import { useOTPViewModel } from "../../viewModels/AuthenticationView/useOTPViewM
 import { OTPInput } from "../../components/molecules/OTPInputGroup/OTPInput";
 import { Divider } from "../../components/molecules/Divider/Divider";
 import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
+import PrimaryButton from "../../components/molecules/Buttons/PrimaryButton";
 
 const OTPScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -87,17 +88,13 @@ const OTPScreen: React.FC = () => {
         </View>
 
         {/* Verify Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          className="mb-6"
+        <PrimaryButton
           onPress={handleOTPVerification}
           loading={isLoading}
           disabled={isLoading}
         >
           Verify
-        </Button>
+        </PrimaryButton>
 
         {/* Divider */}
         <Divider text="Or" />

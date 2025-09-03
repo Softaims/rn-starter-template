@@ -76,7 +76,7 @@ const SignUpScreen: React.FC = () => {
         </View>
 
         {/* Form Section */}
-        <View className="mb-6">
+        <View className="mb-4">
           <CustomText variant="heading" size="2xl" className="mb-4 text-center">
             Sign Up To Your Account
           </CustomText>
@@ -167,7 +167,7 @@ const SignUpScreen: React.FC = () => {
         <Divider text="or signup with" />
 
         {/* Social Login Options */}
-        <View className="flex-col justify-center self-center mb-8">
+        <View className="flex-col justify-center self-center mb-4">
           <GoogleSigninButton
             onPress={signInWithGoogle}
             disabled={googleLoading}

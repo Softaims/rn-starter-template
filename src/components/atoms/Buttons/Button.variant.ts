@@ -11,6 +11,7 @@ export const buttonVariants = cva(
         secondary: 'bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-500',
         outline: 'border-2 border-blue-500 text-blue-500 hover:bg-blue-50 focus:ring-blue-500',
         ghost: 'text-blue-500 hover:bg-blue-50 focus:ring-blue-500',
+        light : "text-white",
         link: 'bg-transparent text-blue-500 underline px-0 py-0 min-h-0 shadow-none hover:text-blue-700 focus:ring-0',
       },
       size: {

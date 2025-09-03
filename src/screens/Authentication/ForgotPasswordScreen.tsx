@@ -8,6 +8,7 @@ import { RedirectItem } from '../../components/molecules/RedirectItem/RedirectIt
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { FormField } from '../../components/molecules/FormField/FormField';
 import { useForgotPasswordViewModel } from '../../viewModels/AuthenticationView/useForgotPasswordViewModel';
+import PrimaryButton from '../../components/molecules/Buttons/PrimaryButton';
 
 const ForgotPasswordScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -61,17 +62,13 @@ const ForgotPasswordScreen: React.FC = () => {
         </View>
 
         {/* Submit Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          className="mb-6"
+        <PrimaryButton
           onPress={handleSubmit}
           loading={isLoading}
           disabled={isLoading}
         >
           Send Verification Code
-        </Button>
+        </PrimaryButton>
 
         {/* Back to Login Redirect */}
         <RedirectItem

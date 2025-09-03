@@ -7,6 +7,7 @@ import Button from '../../components/atoms/Buttons/Button';
 import { FormField } from '../../components/molecules/FormField/FormField';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useResetPasswordViewModel } from '../../viewModels/AuthenticationView/useResetPasswordModel';
+import PrimaryButton from '../../components/molecules/Buttons/PrimaryButton';
 
 const ResetPasswordScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -86,17 +87,13 @@ const ResetPasswordScreen: React.FC = () => {
         </View>
 
         {/* Submit Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          className="mb-6"
+        <PrimaryButton
           onPress={handleSubmit}
           loading={isLoading}
           disabled={isLoading}
         >
           Reset Password
-        </Button>
+        </PrimaryButton>
       </ScrollView>
     </SafeAreaView>
   );

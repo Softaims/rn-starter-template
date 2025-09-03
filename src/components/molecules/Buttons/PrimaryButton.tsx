@@ -13,7 +13,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({ children, ...props }) => {
       className="mb-6"
       {...props}
     >
-      <CustomText variant="default" size="md" color="primary">
+      <CustomText variant="default" size="md" color="light">
         {children}
       </CustomText>
     </Button>
