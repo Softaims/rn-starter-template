@@ -53,7 +53,7 @@ Add the client ID into android/app/src/main/res/values/strings.xml:
   1034133353106-dai9f83u5vc279vgllvk4og6a1kjj2ef.apps.googleusercontent.com
 </string>
 
-4. iOS Setup
+# iOS Setup
 Create an iOS OAuth client in Google Cloud Console.
 Copy the iOS Client ID.
 
@@ -73,7 +73,7 @@ After creating, copy the generated client ID (e.g.,
 Add all Google and Apple client IDs into Supabase (Authentication → Providers).
 Add the Web Client Secret as well.
 5. Update app.json
-"ios": {
+<!-- "ios": {
   "usesAppleSignIn": true
 },
 "plugins": [
@@ -84,8 +84,8 @@ Add the Web Client Secret as well.
     }
   ],
   "expo-apple-authentication"
-]
-🔹 Supabase Configuration
+] -->
+# Supabase Configuration
 In Supabase → Authentication → Providers:
 Add all Google and Apple client IDs.
 Under Redirect URLs, include:

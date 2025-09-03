@@ -20,7 +20,7 @@ import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAp
 import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import * as AppleAuthentication from "expo-apple-authentication";
-import { Vi } from "zod/v4/locales";
+import PrimaryButton from "../../components/molecules/Buttons/PrimaryButton";
 
 const SignUpScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -155,17 +155,13 @@ const SignUpScreen: React.FC = () => {
         </View>
 
         {/* Sign Up Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          className="mb-6"
+        <PrimaryButton
           onPress={onSubmit}
           loading={isLoading}
           disabled={isLoading}
         >
           Sign Up
-        </Button>
+        </PrimaryButton>
 
         {/* Divider */}
         <Divider text="or signup with" />
