@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundler": "metro"
+      "bundler": "metro",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -34,7 +35,8 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.1034133353106-b2iq7gc68nulq1ifn080igj1jr3p9296"
         }
-      ]
+      ],
+      "expo-apple-authentication"
     ]
   }
 }

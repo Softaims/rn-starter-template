@@ -20,7 +20,8 @@ const LoginScreen: React.FC = () => {
     control,
     formState: { errors },
   } = form;
-   const { signInWithGoogle, isLoading: googleLoading } = useGoogleAuthViewModel();
+  const { signInWithGoogle, isLoading: googleLoading } =
+    useGoogleAuthViewModel();
   const { signInWithApple, isLoading: appleLoading } = useAppleAuthViewModel();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -40,10 +41,6 @@ const LoginScreen: React.FC = () => {
     try {
       const values = form.getValues(); // { email, password }
       const result = await loginDirect(values);
-
-      // if (result?.success) {
-      //   navigation.navigate("Home" as never);
-      // }
     } catch (err) {
       console.error("Login failed:", err);
     }
@@ -147,20 +144,25 @@ const LoginScreen: React.FC = () => {
 
         {/* Social Login Options */}
 
-        <View className="flex-row justify-center mb-8">
-        <GoogleSigninButton
-        onPress={signInWithGoogle}
-        disabled={googleLoading}
-      />
+        <View className="flex-col self-center justify-center mb-8">
+          <GoogleSigninButton
+            onPress={signInWithGoogle}
+            disabled={googleLoading}
+          />
 
-      <AppleAuthentication.AppleAuthenticationButton
-        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-        cornerRadius={5}
-        style={{ width: 200, height: 44 }}
-        onPress={signInWithApple}
-        disabled={appleLoading}
-      />
+          <View className="my-1" />
+
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={
+              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+            }
+            buttonStyle={
+              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+            }
+            cornerRadius={5}
+            style={{ width: 200, height: 44 }}
+            onPress={signInWithApple}
+          />
         </View>
 
         {/* Sign Up Redirect */}

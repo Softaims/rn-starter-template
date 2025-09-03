@@ -14,7 +14,10 @@ export const useAppleAuthViewModel = () => {
         ],
       });
 
+      console.log("Apple Credential:", credential);
+
       if (credential.identityToken) {
+        console.log("Identity Token:", credential.identityToken);
         await signInWithSocial("apple", credential.identityToken , undefined);
       } else {
         throw new Error("No identity token received from Apple");

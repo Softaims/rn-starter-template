@@ -31,9 +31,16 @@ add this android client to string.xml
 # <string name="server_client_id">034133353106-dai9f83u5vc279vgllvk4og6a1kjj2ef.apps.googleusercontent.com</string>
 
 # for ios create again
+you should have apple account id 
+
+in xcode add apple signin capabilites in your app
+
 bundle id use commnd grep -r "PRODUCT_BUNDLE_IDENTIFIER" ios/
+
 search com. in terminal and find id 
+
 copy client id after creation 
+
 i.e 1034133353106-b2iq7gc68nulq1ifn080igj1jr3p9296.apps.googleusercontent.com
 
 copy all client ids and paste into supabase google and apple sigin 
@@ -41,14 +48,19 @@ web secret to the side nav fields as well
 
 inside ios oauth copy scheme and paste as follows
 
+add this line in property 
+ios of app.json  "usesAppleSignIn": true,
 
-# add new property named plugin in app.json
-# in that add 
- [
+
+you will add new property named plugins at end of app.json which at the end will look like this
+
+ "plugins": [
       [
         "@react-native-google-signin/google-signin",
         {
-          "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
+          "iosUrlScheme": "com.googleusercontent.apps.1034133353106-b2iq7gc68nulq1ifn080igj1jr3p9296"
         }
-      ]
-]
+      ],
+      "expo-apple-authentication"
+    ]
+

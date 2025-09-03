@@ -20,6 +20,7 @@ import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAp
 import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import * as AppleAuthentication from "expo-apple-authentication";
+import { Vi } from "zod/v4/locales";
 
 const SignUpScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -170,11 +171,13 @@ const SignUpScreen: React.FC = () => {
         <Divider text="or signup with" />
 
         {/* Social Login Options */}
-        <View className="flex-row justify-center mb-8">
+        <View className="flex-col justify-center self-center mb-8">
           <GoogleSigninButton
             onPress={signInWithGoogle}
             disabled={googleLoading}
           />
+
+          <View className="my-1" />
 
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={

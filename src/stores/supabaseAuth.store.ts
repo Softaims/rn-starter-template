@@ -5,8 +5,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authService } from "../services/supabaseAuth.service";
 // import { authService } from "../services/__mocks__/supabaseAuth.service";
 import { AuthState, User } from "../types/auth.types";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import * as AppleAuthentication from "expo-apple-authentication";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -85,6 +83,7 @@ export const useAuthStore = create<AuthState>()(
             idToken,
             accessToken
           );
+          console.log("Social sign-in data:", data, "error:", error);
           if (error) throw error;
           set({ user: data.user, isLoading: false });
         } catch (err: any) {
