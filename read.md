@@ -133,6 +133,10 @@ com.anonymous.rn-template  # your actual bundle ID
 
 ---------------------------------------------------------------------------------
 
+use npx expo run:ios and npx expo run:android commands
+
+---------------------------------------------------------------------------------
+
 ✅ That’s it! Your project now supports:
 Google & Apple Authentication with Supabase
 Custom Splash Screen
