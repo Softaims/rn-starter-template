@@ -46,8 +46,8 @@ If you just bought a laptop, you’ll need some tools:
 
 ### Clone the project
 ```bash
-git clone <your-repo-url>
-cd <project-folder>
+git clone [https://github.com/Softaims/rn-starter-template]
+cd rn-template
 ```
 
 ### Install dependencies
@@ -156,7 +156,8 @@ We use **Ape Tools**: [https://apetools.webprofusion.com]
   ```
 final plugins may look something like this 
 
- ```"plugins": [
+ ```
+"plugins": [
       [
         "@react-native-google-signin/google-signin",
         {
@@ -196,3 +197,10 @@ Your project now supports:
 
 - Keep `.env` safe; don’t share your keys.
 - If stuck, Google the exact error—you’re not alone!
+
+
+## Suggestions and Improvements
+Hey, I’m still learning this stuff (aka pressing buttons until it works 🤓).
+If you spot something broken or weird, don’t roast me—help a fellow coder out!
+
+Together we can make this template less “why is this error happening??” and more “wow, it just works!” 🎉
