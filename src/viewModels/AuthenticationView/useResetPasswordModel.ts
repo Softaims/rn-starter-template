@@ -1,4 +1,3 @@
-// src/viewModels/useResetPasswordViewModel.ts
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema, ResetPasswordFormData } from "../../validations/auth.schema";
@@ -21,7 +20,8 @@ export const useResetPasswordViewModel = () => {
       return await resetPassword(data.password);
     } catch (error) {
       console.error("Reset password error:", error);
-      throw error;
+      // Error is already handled by the store
+      return false;
     }
   };
 

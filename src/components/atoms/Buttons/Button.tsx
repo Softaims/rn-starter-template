@@ -4,7 +4,6 @@ import { TouchableOpacity, Text, ActivityIndicator, View } from 'react-native';
 import { buttonVariants } from './Button.variant';
 import { ButtonProps } from './Button.types';
 import clsx from 'clsx';
-import CustomText from '../CustomText/CustomText';
 
 const Button: React.FC<ButtonProps> = ({
   variant,

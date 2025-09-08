@@ -1,22 +1,23 @@
-import React, { use, useEffect, useState } from "react";
-import { View, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import CustomText from "../../components/atoms/CustomText/CustomText";
-import Button from "../../components/atoms/Buttons/Button";
-import { useLoginViewModel } from "../../viewModels/AuthenticationView/useLoginViewModel";
-import { FormField } from "../../components/molecules/FormField/FormField";
-import { Divider } from "../../components/molecules/Divider/Divider";
-import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
+import { View, ScrollView, SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAppleAuthViewModel";
-import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
+import PrimaryButton from "../../src/components/molecules/Buttons/PrimaryButton";
+import CustomText from '../../src/components/atoms/CustomText/CustomText';
+import RedirectItem from '../../src/components/molecules/RedirectItem/RedirectItem';
+import Divider from "../../src/components/molecules/Divider/Divider";
+import FormField from '../../src/components/molecules/FormField/FormField';
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import * as AppleAuthentication from "expo-apple-authentication";
-import PrimaryButton from "../../components/molecules/Buttons/PrimaryButton";
+
+import { useLoginViewModel } from "../../src/viewModels/AuthenticationView/useLoginViewModel";
+import { useGoogleAuthViewModel } from "../../src/viewModels/AuthenticationView/useGoogleAuthViewModel";
+import { useAppleAuthViewModel } from "../../src/viewModels/AuthenticationView/useAppleAuthViewModel";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+
 
 const LoginScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const { form, loginDirect, isLoading, error } = useLoginViewModel();
+  const router = useRouter();
+  const { form, loginDirect, isLoading, error ,clearError } = useLoginViewModel();
   const {
     control,
     formState: { errors },
@@ -27,25 +28,35 @@ const LoginScreen: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     if (error) {
-      console.error("Login error:", error);
+      Alert.alert(
+        "Login Error",
+        error.message || "Something went wrong. Please try again.",
+        [
+          {
+            text: "OK",
+            onPress: () => clearError(),
+          },
+        ]
+      );
     }
-  }, [error]);
+  }, [error, clearError]);
+
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-  /**
-   * Handle login button click
-   */
-  const handleLogin = async () => {
-    try {
-      const values = form.getValues(); // { email, password }
-      const result = await loginDirect(values);
-    } catch (err) {
-      console.error("Login failed:", err);
+  const handleLogin = form.handleSubmit(async (values) => {
+  try {
+    const result = await loginDirect(values);
+    if (!result) {
+      console.log("Login failed");
     }
-  };
+  } catch (err) {
+    console.error("Login failed:", err);
+  }
+});
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -122,7 +133,7 @@ const LoginScreen: React.FC = () => {
         <RedirectItem
           message=""
           actionLabel="Forgot Password?"
-          onPress={() => navigation.navigate("ForgotPassword" as never)}
+          onPress={() => router.push("/(authentication)/forget-password")}
           align="right"
           className="mb-6"
         />
@@ -166,7 +177,7 @@ const LoginScreen: React.FC = () => {
         <RedirectItem
           message="Don't have an account? "
           actionLabel="Sign Up"
-          onPress={() => navigation.navigate("SignUp" as never)}
+          onPress={() => router.push("/(authentication)/signup")}
         />
       </ScrollView>
     </SafeAreaView>

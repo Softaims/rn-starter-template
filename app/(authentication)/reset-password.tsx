@@ -1,16 +1,17 @@
 // src/screens/ResetPasswordScreen.tsx
-import React, { useState } from 'react';
 import { View, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import CustomText from '../../components/atoms/CustomText/CustomText';
-import Button from '../../components/atoms/Buttons/Button';
-import { FormField } from '../../components/molecules/FormField/FormField';
+import CustomText from '../../src/components/atoms/CustomText/CustomText';
+import FormField from '../../src/components/molecules/FormField/FormField';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useResetPasswordViewModel } from '../../viewModels/AuthenticationView/useResetPasswordModel';
-import PrimaryButton from '../../components/molecules/Buttons/PrimaryButton';
+import PrimaryButton from '../../src/components/molecules/Buttons/PrimaryButton';
+
+import React, { useState } from 'react';
+import { useRouter } from "expo-router";
+import { useResetPasswordViewModel } from '../../src/viewModels/AuthenticationView/useResetPasswordModel';
+
 
 const ResetPasswordScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const { form, handleSubmit, isLoading, error } = useResetPasswordViewModel();
   const { control, formState: { errors } } = form;
   const [showPassword, setShowPassword] = useState(false);

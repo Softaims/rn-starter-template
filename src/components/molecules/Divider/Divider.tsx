@@ -4,7 +4,7 @@ import { View } from "react-native";
 import CustomText from "../../atoms/CustomText/CustomText";
 import { DividerProps } from "./Divider.types";
 import { dividerVariants, dividerLineVariants, dividerTextVariants } from "./Divider.variants";
-export const Divider: React.FC<DividerProps> = ({
+ const Divider: React.FC<DividerProps> = ({
   text,
   orientation = "horizontal",
   variant = "default",
@@ -51,3 +51,5 @@ export const Divider: React.FC<DividerProps> = ({
     </View>
   );
 };
+
+export default Divider;

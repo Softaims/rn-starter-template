@@ -11,6 +11,8 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
   isAuthenticated: boolean;
+  isVerified: boolean;
+  needsVerification: boolean; // ✅ new flag
 
   // Actions
   initializeAuth: () => Promise<void>;

@@ -8,6 +8,7 @@ export const useLogoutViewModel = () => {
       await signOut();
     } catch (err) {
       console.error("Sign out failed:", err);
+      // Error is already handled by the store
     }
   };
 

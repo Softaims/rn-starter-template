@@ -1,12 +1,12 @@
 // src/components/atoms/GoogleSignInButton/GoogleSignInButton.tsx
 import React from "react";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
-import { GoogleSignInButtonProps } from "./GoogleSignInButton.types";
+// import { GoogleSignInButtonProps } from "./GoogleSignInButton.types";
 import { googleButtonVariants } from "./GoogleSignInButton.variant";
 import clsx from "clsx";
 import { StyleSheet } from "react-native";
 
-const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
+const GoogleSignInButton: React.FC<any> = ({
   size = "wide",
   color = "dark",
   disabled,

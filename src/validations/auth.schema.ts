@@ -8,8 +8,6 @@ export const signUpSchema = z
     email: z.string().email(),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
-    // firstName: z.string().min(1, "First name required"),
-    // lastName: z.string().min(1, "Last name required"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords must match",

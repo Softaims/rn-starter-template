@@ -4,7 +4,7 @@ import { RedirectItemProps } from "./RedirectItem.types";
 import CustomText from "../../atoms/CustomText/CustomText";
 import { redirectItemVariants } from "./RedirectItem.variants";
 
-export const RedirectItem: React.FC<RedirectItemProps> = ({
+const RedirectItem: React.FC<RedirectItemProps> = ({
   message,
   actionLabel,
   onPress,
@@ -23,3 +23,5 @@ export const RedirectItem: React.FC<RedirectItemProps> = ({
     </TouchableOpacity>
   </View>
 );
+
+export default RedirectItem;

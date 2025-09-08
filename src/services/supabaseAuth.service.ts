@@ -4,184 +4,199 @@ import { SignUpFormData, AuthResponse } from "../types/auth.types";
 
 export const authService = {
   signUp: async (formData: SignUpFormData) => {
-    const { email, password, username} = formData;
+    const { email, password, username } = formData;
 
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: "myapp://auth/verify", // deep link for verification
-        data: { username }, // store in user_metadata
+        emailRedirectTo: "myapp://auth/verify",
+        data: { username },
       },
     });
 
-    console.log("Supabase signUp response:", { data, error });
+    console.log("[Supabase] signUp response:", { data, error });
 
-    if (error) throw error;
-
-    const user = data.user;
-    if (user) {
-      // insert profile row
-      const { error: profileError } = await supabase.from("profiles").insert([
-        {
-          id: user.id,
-          email: user.email,
-          username: username,
-          // first_name: firstName,
-          // last_name: lastName,
-
-        },
-      ]);
-
-      if (profileError) throw profileError;
+    if (error) {
+      throw {
+        message: error.message,
+        code: error.code || "SIGN_UP_ERROR",
+        details: error,
+      };
     }
 
     return { success: true, user: data.user };
   },
 
   signIn: async (email: string, password: string): Promise<AuthResponse> => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (error) {
-        throw error;
-      }
+    console.log("[Supabase] signIn response:", { data, error });
 
-      return {
-        success: true,
-        data: {
-          userId: data.user?.id || "",
-          email: data.user?.email || "",
-        },
-      };
-    } catch (error) {
-      console.error("Sign in error:", error);
+    if (error) {
       throw {
-        message: error.message || "An error occurred during sign in",
+        message: error.message,
         code: error.code || "SIGN_IN_ERROR",
+        details: error,
       };
     }
+
+    return {
+      success: true,
+      data: {
+        userId: data.user?.id || "",
+        email: data.user?.email || "",
+      },
+    };
   },
 
-   signInWithProvider: async (provider: string, idToken: string, accessToken?: string) => {
-    return supabase.auth.signInWithIdToken({
+  signInWithProvider: async (provider: string, idToken: string, accessToken?: string) => {
+    const { data, error } = await supabase.auth.signInWithIdToken({
       provider,
       token: idToken,
       access_token: accessToken,
     });
+
+    console.log("[Supabase] signInWithProvider response:", { data, error });
+
+    if (error) {
+      throw {
+        message: error.message,
+        code: error.code || "SOCIAL_SIGN_IN_ERROR",
+        details: error,
+      };
+    }
+
+    return { success: true, data };
   },
 
   signOut: async (): Promise<void> => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      console.error("Sign out error:", error);
+    const { error } = await supabase.auth.signOut();
+    console.log("[Supabase] signOut", { error });
+
+    if (error) {
       throw {
-        message: error.message || "An error occurred during sign out",
+        message: error.message,
         code: error.code || "SIGN_OUT_ERROR",
+        details: error,
       };
     }
   },
 
   forgotPassword: async (email: string): Promise<AuthResponse> => {
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "nourishwise://reset-password", // Deep link for your app
-      });
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "myapp://reset-password",
+    });
 
-      if (error) {
-        throw error;
-      }
+    console.log("[Supabase] forgotPassword", { error });
 
-      return {
-        success: true,
-        message: "Password reset email sent successfully",
-      };
-    } catch (error) {
-      console.error("Forgot password error:", error);
+    if (error) {
       throw {
-        message: error.message || "An error occurred while sending reset email",
+        message: error.message,
         code: error.code || "FORGOT_PASSWORD_ERROR",
+        details: error,
       };
     }
+
+    return { success: true, message: "Password reset email sent successfully" };
   },
 
   resetPassword: async (newPassword: string): Promise<AuthResponse> => {
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
 
-      if (error) {
-        throw error;
-      }
+    console.log("[Supabase] resetPassword", { error });
 
-      return {
-        success: true,
-        message: "Password reset successfully",
-      };
-    } catch (error) {
-      console.error("Reset password error:", error);
+    if (error) {
       throw {
-        message: error.message || "An error occurred while resetting password",
+        message: error.message,
         code: error.code || "RESET_PASSWORD_ERROR",
+        details: error,
       };
     }
+
+    return { success: true, message: "Password reset successfully" };
   },
 
   verifyOtp: async (email: string, token: string): Promise<AuthResponse> => {
-    try {
-      // This is a simplified implementation
-      // In a real app, you might use Supabase's OTP verification
-      // or implement your own OTP system
-      const { data, error } = await supabase.auth.verifyOtp({
-        email,
-        token,
-        type: "email",
-      });
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: "email",
+    });
 
-      if (error) {
-        throw error;
-      }
+    console.log("[Supabase] verifyOtp response:", { data, error });
 
-      console.log("OTP verification successful:", data);
-
-      return {
-        success: true,
-        data: {
-          userId: data.user?.id || "",
-          email: data.user?.email || "",
-        },
-      };
-    } catch (error) {
-      console.error("OTP verification error:", error);
+    if (error) {
       throw {
-        message: error.message || "An error occurred during OTP verification",
+        message: error.message,
         code: error.code || "OTP_VERIFICATION_ERROR",
+        details: error,
       };
     }
+
+    return {
+      success: true,
+      data: {
+        userId: data.user?.id || "",
+        email: data.user?.email || "",
+      },
+    };
   },
 
   getSession: async () => {
-    try {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        throw error;
-      }
-      return data.session;
-    } catch (error) {
-      console.error("Get session error:", error);
-      throw error;
+    const { data, error } = await supabase.auth.getSession();
+    console.log("[Supabase] getSession response:", { data, error });
+
+    if (error) {
+      throw {
+        message: error.message,
+        code: error.code || "GET_SESSION_ERROR",
+        details: error,
+      };
     }
+
+    return data.session;
   },
 
-  onAuthStateChange: (callback: (event: any, session: any) => void) => {
-    return supabase.auth.onAuthStateChange(callback);
+  getUser: async () => {
+    const { data, error } = await supabase.auth.getUser();
+    console.log("[Supabase] getUser response:", { data, error });
+
+    if (error) {
+      throw {
+        message: error.message,
+        code: error.code || "GET_USER_ERROR",
+        details: error,
+      };
+    }
+
+    return data.user;
+  },
+
+  refreshSession: async () => {
+    const { data, error } = await supabase.auth.refreshSession();
+    console.log("[Supabase] refreshSession response:", { data, error });
+
+    if (error) {
+      throw {
+        message: error.message,
+        code: error.code || "REFRESH_SESSION_ERROR",
+        details: error,
+      };
+    }
+
+    return data.session;
+  },
+
+  onAuthStateChange: (callback: (event: string, session: any) => void) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("[Supabase] Auth state change:", { event, session });
+      callback(event, session);
+    });
+
+    return listener;
   },
 };

@@ -2,6 +2,7 @@
   "expo": {
     "name": "rn-template",
     "slug": "rn-template",
+    "scheme": "rntemplate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -36,7 +37,9 @@
           "iosUrlScheme": "com.googleusercontent.apps.1034133353106-b2iq7gc68nulq1ifn080igj1jr3p9296"
         }
       ],
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      "expo-router",
+      "expo-secure-store"
     ]
   }
 }

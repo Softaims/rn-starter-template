@@ -1,27 +1,25 @@
-// src/screens/ForgotPasswordScreen.tsx
-import React, { useEffect } from 'react';
-import { View, ScrollView, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import CustomText from '../../components/atoms/CustomText/CustomText';
-import Button from '../../components/atoms/Buttons/Button';
-import { RedirectItem } from '../../components/molecules/RedirectItem/RedirectItem';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { FormField } from '../../components/molecules/FormField/FormField';
-import { useForgotPasswordViewModel } from '../../viewModels/AuthenticationView/useForgotPasswordViewModel';
-import PrimaryButton from '../../components/molecules/Buttons/PrimaryButton';
+import { View, ScrollView, SafeAreaView } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import PrimaryButton from "../../src/components/molecules/Buttons/PrimaryButton";
+import CustomText from '../../src/components/atoms/CustomText/CustomText';
+import RedirectItem from "../../src/components/molecules/RedirectItem/RedirectItem";
+import FormField from "../../src/components/molecules/FormField/FormField";
+
+import { useForgotPasswordViewModel } from "../../src/viewModels/AuthenticationView/useForgotPasswordViewModel";
+import { useRouter } from "expo-router";
+import React, { useEffect } from "react";
 
 const ForgotPasswordScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const { form, handleSubmit, isLoading, error, isSuccess } = useForgotPasswordViewModel();
   const { control, formState: { errors }, getValues } = form;
 
-  // Navigate to reset screen when successful
   useEffect(() => {
     if (isSuccess) {
       const email = getValues('email');
-      navigation.navigate('ResetPassword', { email });
+      router.push('/(authentication)/reset-password?email=' + encodeURIComponent(email));
     }
-  }, [isSuccess, navigation, getValues]);
+  }, [isSuccess, router, getValues]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -74,7 +72,7 @@ const ForgotPasswordScreen: React.FC = () => {
         <RedirectItem
           message="Remember your password? "
           actionLabel="Back to Login"
-          onPress={() => navigation.goBack()}
+          onPress={() => router.push('/(authentication)/login')}
         />
       </ScrollView>
     </SafeAreaView>

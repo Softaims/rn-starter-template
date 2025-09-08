@@ -1,35 +1,32 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-  Text,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Controller } from "react-hook-form";
-import CustomText from "../../components/atoms/CustomText/CustomText";
-import Button from "../../components/atoms/Buttons/Button";
-import TextInputField from "../../components/atoms/TextInputField/TextInputField";
-import { useSignUpViewModel } from "../../viewModels/AuthenticationView/useSignUpViewModel";
-import { FormField } from "../../components/molecules/FormField/FormField";
-import { Divider } from "../../components/molecules/Divider/Divider";
-import { RedirectItem } from "../../components/molecules/RedirectItem/RedirectItem";
+// SignUpScreen.tsx - Fixed version
+import { View, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
+import { Alert } from "react-native";
+
+import PrimaryButton from "../../src/components/molecules/Buttons/PrimaryButton";
+import CustomText from "../../src/components/atoms/CustomText/CustomText";
+import RedirectItem from "../../src/components/molecules/RedirectItem/RedirectItem";
+import Divider from "../../src/components/molecules/Divider/Divider";
+import FormField from "../../src/components/molecules/FormField/FormField";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { useAppleAuthViewModel } from "../../viewModels/AuthenticationView/useAppleAuthViewModel";
-import { useGoogleAuthViewModel } from "../../viewModels/AuthenticationView/useGoogleAuthViewModel";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import * as AppleAuthentication from "expo-apple-authentication";
-import PrimaryButton from "../../components/molecules/Buttons/PrimaryButton";
+
+import { useSignUpViewModel } from "../../src/viewModels/AuthenticationView/useSignUpViewModel";
+import { useGoogleAuthViewModel } from "../../src/viewModels/AuthenticationView/useGoogleAuthViewModel";
+import { useAppleAuthViewModel } from "../../src/viewModels/AuthenticationView/useAppleAuthViewModel";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 
 const SignUpScreen: React.FC = () => {
-  const navigation = useNavigation();
-  console.log("sdssddsadsa"); // Disable console.log
-  const { form, handleSubmit, isLoading, error, isSuccess, userEmail } =
+  const router = useRouter();
+  const { form, onSubmit, isLoading, error, clearError, isSuccess, userEmail } =
     useSignUpViewModel();
+
+  console.log("SignUpScreen - isSuccess:", isSuccess, "userEmail:", userEmail);
+
   const { signInWithGoogle, isLoading: googleLoading } =
     useGoogleAuthViewModel();
-  const { signInWithApple, isLoading: appleLoading } = useAppleAuthViewModel();
+  const { signInWithApple } = useAppleAuthViewModel();
 
   const {
     control,
@@ -39,14 +36,19 @@ const SignUpScreen: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
-    if (isSuccess && userEmail) {
-      navigation.navigate("OTP" as never, { email: userEmail } as never);
+    if (error) {
+      Alert.alert(
+        "Sign Up Error",
+        error.message || "Something went wrong. Please try again.",
+        [
+          {
+            text: "OK",
+            onPress: () => clearError(),
+          },
+        ]
+      );
     }
-  }, [isSuccess, userEmail, navigation]);
-
-  const onSubmit = (data: any) => {
-    handleSubmit(data);
-  };
+  }, [error, clearError]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -192,7 +194,7 @@ const SignUpScreen: React.FC = () => {
         <RedirectItem
           message="Already have an account? "
           actionLabel="Login"
-          onPress={() => navigation.navigate("Login" as never)}
+          onPress={() => router.push("/(authentication)/login")}
         />
       </ScrollView>
     </SafeAreaView>

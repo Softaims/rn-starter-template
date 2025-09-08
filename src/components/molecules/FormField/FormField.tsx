@@ -7,7 +7,7 @@ import { FormFieldProps } from "./FormField.types";
 import { formFieldVariants } from "./FormField.variants";
 import clsx from "clsx";
 
-export const FormField: React.FC<FormFieldProps> = ({
+const FormField: React.FC<FormFieldProps> = ({
   control,
   name,
   label,
@@ -65,3 +65,5 @@ export const FormField: React.FC<FormFieldProps> = ({
     </View>
   );
 };
+
+export default FormField;

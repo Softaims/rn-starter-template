@@ -1,24 +1,28 @@
 // src/viewModels/useGoogleAuthViewModel.ts
 import { useEffect } from "react";
-import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
+import {
+  GoogleSignin,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
 import { useAuthStore } from "../../stores/supabaseAuth.store";
 
-const webClientId =
-  "1034133353106-ssnmqio1ciuo9s9mb9l03vh8qth5ah4l.apps.googleusercontent.com";
-const iosClientId =
-  "1034133353106-b2iq7gc68nulq1ifn080igj1jr3p9296.apps.googleusercontent.com";
+const webClientId = process.env.EXPO_PUBLIC_WEB_CLIENT_KEY 
+const iosClientId = process.env.EXPO_PUBLIC_IOS_CLIENT_KEY
+
+console.log("Web Client ID:", webClientId);
+console.log("iOS Client ID:", iosClientId);
 
 export const useGoogleAuthViewModel = () => {
   const { signInWithSocial, isLoading, error } = useAuthStore();
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId:  webClientId,
+      webClientId: webClientId,
       iosClientId: iosClientId,
     });
   }, []);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (): Promise<boolean> => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
@@ -26,12 +30,17 @@ export const useGoogleAuthViewModel = () => {
 
       if (tokens.idToken) {
         await signInWithSocial("google", tokens.idToken, tokens.accessToken);
+        return true; // Success
       } else {
         throw new Error("No ID token received from Google");
       }
     } catch (err: any) {
-      if (err.code !== statusCodes.SIGN_IN_CANCELLED) {
+      if (err.code === statusCodes.SIGN_IN_CANCELLED) {
+        // User cancelled the login flow
+        return false;
+      } else {
         console.error("Google Sign-In Error:", err);
+        throw err; // Re-throw other errors
       }
     }
   };

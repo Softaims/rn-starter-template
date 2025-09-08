@@ -27,7 +27,8 @@ export const useLoginViewModel = () => {
       return result;
     } catch (err) {
       console.error("Login error:", err);
-      throw err;
+      // Error is already handled by the store, no need to throw
+      return false;
     }
   };
 

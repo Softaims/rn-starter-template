@@ -25,7 +25,8 @@ export const useOTPViewModel = (email: string) => {
       return result;
     } catch (err) {
       console.error("OTP verification error:", err, email, data);
-      throw err;
+      // Error is already handled by the store
+      return false;
     }
   };
 
@@ -37,9 +38,11 @@ export const useOTPViewModel = (email: string) => {
     try {
       await forgotPassword(email);
       console.log("OTP resent successfully");
+      return true;
     } catch (err) {
       console.error("Resend OTP error:", err);
-      throw err;
+      // Error is already handled by the store
+      return false;
     }
   };
 
