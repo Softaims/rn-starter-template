@@ -154,6 +154,23 @@ We use **Ape Tools**: [https://apetools.webprofusion.com]
     "expo-apple-authentication"
   ]
   ```
+final plugins may look something like this 
+
+ ```"plugins": [
+    "expo-apple-authentication"
+  ]
+  "plugins": [
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.1034133353106-b2iq7gc68nulq1ifn080igj1jr3p9296"
+        }
+      ],
+      "expo-apple-authentication",
+      "expo-router",
+      "expo-secure-store"
+    ]
+```
 
 ## 7️⃣ Supabase Configuration
 
