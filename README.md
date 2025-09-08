@@ -25,7 +25,7 @@ If you just bought a laptop, you’ll need some tools:
   ```bash
   npm install -g expo-cli
   ```
-- **Learn more**: [https://docs.expo.dev/get-started/installation/](https://docs.expo.dev/get-started/installation/)
+- **Learn more**: [https://docs.expo.dev/get-started/installation/]
 
 ### Git (for version control)
 - **Download & install**: [https://git-scm.com/downloads]
@@ -157,9 +157,6 @@ We use **Ape Tools**: [https://apetools.webprofusion.com]
 final plugins may look something like this 
 
  ```"plugins": [
-    "expo-apple-authentication"
-  ]
-  "plugins": [
       [
         "@react-native-google-signin/google-signin",
         {
