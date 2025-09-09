@@ -32,13 +32,16 @@
     "react-hook-form": "^7.62.0",
     "react-native": "0.79.6",
     "react-native-get-random-values": "^1.11.0",
+    "react-native-purchases": "^9.4.0",
+    "react-native-purchases-ui": "^9.4.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.3.0",
     "zod": "^4.1.4",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "expo-dev-client": "~5.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

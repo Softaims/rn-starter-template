@@ -111,6 +111,11 @@ PODS:
     - hermes-engine/Pre-built (= 0.79.6)
   - hermes-engine/Pre-built (0.79.6)
   - PromisesObjC (2.4.0)
+  - PurchasesHybridCommon (17.5.1):
+    - RevenueCat (= 5.37.0)
+  - PurchasesHybridCommonUI (17.5.1):
+    - PurchasesHybridCommon (= 17.5.1)
+    - RevenueCatUI (= 5.37.0)
   - RCT-Folly (2024.11.18.00):
     - boost
     - DoubleConversion
@@ -1834,6 +1839,9 @@ PODS:
     - React-logger (= 0.79.6)
     - React-perflogger (= 0.79.6)
     - React-utils (= 0.79.6)
+  - RevenueCat (5.37.0)
+  - RevenueCatUI (5.37.0):
+    - RevenueCat (= 5.37.0)
   - RNCAsyncStorage (2.1.2):
     - DoubleConversion
     - glog
@@ -1883,6 +1891,12 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNPaywalls (9.4.0):
+    - PurchasesHybridCommonUI (= 17.5.1)
+    - React-Core
+  - RNPurchases (9.4.0):
+    - PurchasesHybridCommon (= 17.5.1)
+    - React-Core
   - RNReanimated (3.17.5):
     - DoubleConversion
     - glog
@@ -2173,6 +2187,8 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
+  - RNPaywalls (from `../node_modules/react-native-purchases-ui`)
+  - RNPurchases (from `../node_modules/react-native-purchases`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -2187,6 +2203,10 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - PromisesObjC
+    - PurchasesHybridCommon
+    - PurchasesHybridCommonUI
+    - RevenueCat
+    - RevenueCatUI
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -2361,6 +2381,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-google-signin/google-signin"
+  RNPaywalls:
+    :path: "../node_modules/react-native-purchases-ui"
+  RNPurchases:
+    :path: "../node_modules/react-native-purchases"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -2397,6 +2421,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 44bb6fe76a6eb400d3a992e2d0b21946ae999fa9
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  PurchasesHybridCommon: 27724c7db82f807ecaf301eccf6b188b56714fb7
+  PurchasesHybridCommonUI: ab4e15d5fd1692583192d1fdeeae9210c2a7ac23
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 9bc64754b40b86fa5e32f293ab3ea8eea2248339
   RCTRequired: ee36c1ce9a5e65a3f629c13f38a85308eb8eebda
@@ -2461,8 +2487,12 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: ae0be24eb18014a031b4b220cb3973d07c3cbaf8
   ReactCodegen: 06cf663b23a161f42a2e14087269753f422885c0
   ReactCommon: 44c86ec3ace664c0f33b7a2ac89aced8304ef25e
+  RevenueCat: fc4ad171bbfbfb974210f0b26ce470b007be111f
+  RevenueCatUI: cf8e3cc5ed9bef944138a991577a28c0c4454020
   RNCAsyncStorage: 39c42c1e478e1f5166d1db52b5055e090e85ad66
   RNGoogleSignin: 204d0031895b0b350268f29945571d4bed371beb
+  RNPaywalls: f1370a0beabcfda8cbc7d4e1a936e91742a938d0
+  RNPurchases: ad8e61ccbab5a347058ee7caf39d8ffecb6dadaa
   RNReanimated: 2313402fe27fecb7237619e9c6fcee3177f08a65
   RNScreens: 482e9707f9826230810c92e765751af53826d509
   RNVectorIcons: 1fe59cfa2d3ac94ceb9d373a59c54609471b8d56

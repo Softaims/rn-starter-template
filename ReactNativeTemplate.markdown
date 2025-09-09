@@ -163,6 +163,40 @@ We use **Ape Tools**: [https://apetools.webprofusion.com]
   - `host.exp.Exponent` (Expo testing)
   - `com.yourbundleid.app` (Your actual bundle ID)
 
+## RevnueCat configurations
+## IOS 
+- You need to have access to app store connect as an account holder
+- create keys by App Store Connect → Users and Access → Integrations → Team Keys
+- Give app manager access to this key
+- Drag and drop this key to revnuce cat console 
+- Copy and paste the issuer id when asked
+- now repeat same step and create in app purchase key
+- Now create or select your project from app store inside the revnuecat dashboard
+- Now in order to register your app id as given below Bundle id field
+- In console add the in app purchases capability to the app (select in-app purchases option for sidenav)
+- as we are targetting subscriptions for now Before creating anything else do give a read 
+to [https://developer.apple.com/help/app-store-connect/manage-subscriptions/offer-auto-renewable-subscription]
+- make yourself familiar with revnuecat working 
+[https://www.youtube.com/watch?v=QxHeZiW4KCA]
+
+- Entitlements (user paying for ,they service they are getting)
+- products (inside entitle container, the things that user may buy )
+- offerings 
+
+- We need to give user only one subscription tier at a time so we gonna create single group
+- now create group(s) and add items (we did base_month,base_year,plat_mon,plat_year)
+
+[https://www.revenuecat.com/docs/getting-started/quickstart]
+- create entitlements in revnue cat dashboard 
+(plat entitlement)
+- import your both platinum subscriptions and attack prod and entitlement together 
+- same for base
+- now for paywall presentation create offering we have 2 default (base) and platinum (upgrade)
+- design your paywall if you want to 
+
+[https://www.revenuecat.com/docs/getting-started/installation/expo]
+- install sdk npx expo install react-native-purchases react-native-purchases-ui
+
 ## ✅ Project is Ready!
 
 Your project now supports:

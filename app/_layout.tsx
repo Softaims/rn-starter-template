@@ -39,7 +39,10 @@ export default function RootLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       {isAuthenticated && isVerified ? (
+        <>
         <Stack.Screen name="(home)" />
+        <Stack.Screen name="(paywall)" />
+        </>
       ) : needsVerification ? (
         <Stack.Screen name="(otp)" />
       ) : (

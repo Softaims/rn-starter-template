@@ -162,6 +162,7 @@ export const authService = {
   },
 
   getUser: async () => {
+    // for effieciency, you might want to use cache (getClaims) 
     const { data, error } = await supabase.auth.getUser();
     console.log("[Supabase] getUser response:", { data, error });
 
